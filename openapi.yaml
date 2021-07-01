@@ -19,9 +19,9 @@ info:
                  or pass the <strong>?test</strong> query parameter with the call. Whether or not <strong>?test</strong> is present,
                  if both Sandbox JWK and Dev URL are configured, and the domains match, the response will be formatted according to JSON Web Signature, RFC 7515. </p>
   contact:
-    name: Blake Nahin
+    name: VATUSA Web Team
     url: 'https://www.vatusa.net/info/members'
-  version: '2.3'
+  version: 2.3.1
   x-logo:
     url: 'https://www.vatusa.net/img/logo-full.png'
 servers:
@@ -666,23 +666,84 @@ components:
     jwt:
       type: http
       description: JSON Web Token translated from Laravel session
-      scheme: basic
+      scheme: bearer
     session:
-      type: http
-      description: Session cookie (Authentication on main website)
-      scheme: basic
+      name: Cookie
+      type: apiKey
+      in: cookie
     apikey:
       type: apiKey
       description: API Key issued to facilities and generated on Facility Management page
-      name: apikey
-      in: query
+      name: 'Authorization: APIKey'
+      in: header
 paths:
-  /users:
+  /auth/token:
     get:
-      summary: Your GET endpoint
-      tags: []
+      summary: 'Get JWT [Private]'
+      tags:
+        - auth
       responses:
         '200':
           description: OK
-      operationId: get-users
-      description: Place holder
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+              examples: {}
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      operationId: get-auth-token
+      description: 'Get JWT, CORS restricted.'
+      security:
+        - jwt: []
+        - session: []
+  /auth/token/refresh:
+    get:
+      summary: 'Refresh JWT. [Private]'
+      tags:
+        - auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      operationId: get-auth-token-refresh
+      description: Refresh JWT. CORS Restricted.
+      security:
+        - jwt: []
+        - session: []
+  /auth/info:
+    get:
+      summary: Get user info
+      tags:
+        - auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples: {}
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      operationId: get-auth-info
+      security:
+        - jwt: []
+        - session: []
