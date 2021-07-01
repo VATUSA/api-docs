@@ -1,0 +1,48 @@
+title: TrainingRecord
+type: object
+properties:
+  id:
+    type: integer
+    description: Record ID
+  student_id:
+    type: integer
+    description: Student CID
+  instructor_id:
+    type: integer
+    description: Instructor CID
+  session_date:
+    type: string
+    description: Date and time of session
+  facility_id:
+    type: string
+    description: Facility ID (ex. ZSE)
+  position:
+    type: string
+    description: Position worked/trained on (ex. SEA_APP)
+  duration:
+    type: string
+    description: 'Duration of session, HH:MM'
+  movements:
+    type: integer
+    description: Number of aircraft seen
+  score:
+    type: integer
+    description: Overall score/rating out of 5
+  notes:
+    type: string
+    description: Training notes content
+  location:
+    type: integer
+    description: 0 = Classroom; 1 = Live; 2 = Sweatbox
+  ots_status:
+    type: boolean
+    description: 'OTS Status: 0 = Not OTS, 1 = OTS Pass, 2 = OTS Fail, 3 = OTS Recommended'
+  is_cbt:
+    type: boolean
+    description: System - CBT Completion
+  solo_granted:
+    type: boolean
+    description: Solo was granted during the session
+  modified_by:
+    type: boolean
+    description: Editor CID

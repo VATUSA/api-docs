@@ -1,0 +1,15 @@
+title: Action
+type: object
+properties:
+  id:
+    type: integer
+    description: Class Action
+  to:
+    type: integer
+    description: CID log entered for
+  log:
+    type: string
+    description: Class Action
+  created_at:
+    type: string
+    description: Date rating issued

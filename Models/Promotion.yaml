@@ -1,0 +1,30 @@
+title: Promotion
+type: object
+properties:
+  id:
+    type: integer
+    description: Class Promotion
+  cid:
+    type: integer
+    description: Class Promotion
+  grantor:
+    type: integer
+    description: 'CID of grantor, 11111 = system generated or conducted outside of VATUSA'
+  to:
+    type: integer
+    description: 'Rating based off array where 1=OBS, S1, S2, S3, C1, C2, C3, I1, I2, I3, SUP, ADM'
+  from:
+    type: integer
+    description: 'Rating based off array where 1=OBS, S1, S2, S3, C1, C2, C3, I1, I2, I3, SUP, ADM'
+  created_at:
+    type: string
+    description: Date rating issued
+  exam:
+    type: string
+    description: Date of exam
+  examiner:
+    type: integer
+    description: CERT ID of examiner
+  position:
+    type: string
+    description: Position worked

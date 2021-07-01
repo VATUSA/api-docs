@@ -1,0 +1,15 @@
+title: Facility
+type: object
+properties:
+  id:
+    type: string
+    description: Facility IATA ID
+  name:
+    type: string
+    description: Class Facility
+  url:
+    type: string
+    description: Class Facility
+  region:
+    type: integer
+    description: Region represented by ATD (ie 7 = VATUSA7)

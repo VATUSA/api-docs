@@ -1,0 +1,27 @@
+title: KnowledgebaseQuestions
+type: object
+properties:
+  id:
+    type: integer
+    description: Class KnowledgebaseQuestions
+  category_id:
+    type: integer
+    description: Class KnowledgebaseQuestions
+  order:
+    type: integer
+    description: Class KnowledgebaseQuestions
+  question:
+    type: string
+    description: Class KnowledgebaseQuestions
+  answer:
+    type: string
+    description: Class KnowledgebaseQuestions
+  updated_by:
+    type: integer
+    description: Class KnowledgebaseQuestions
+  created_at:
+    type: string
+    description: Class KnowledgebaseQuestions
+  updated_at:
+    type: string
+    description: Class KnowledgebaseQuestions

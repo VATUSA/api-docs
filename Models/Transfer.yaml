@@ -1,0 +1,33 @@
+title: Transfer
+type: object
+properties:
+  id:
+    type: integer
+    description: Class Transfer
+  cid:
+    type: integer
+    description: Class Transfer
+  to:
+    type: string
+    description: Class Transfer
+  from:
+    type: string
+    description: Class Transfer
+  reason:
+    type: string
+    description: Class Transfer
+  status:
+    type: integer
+    description: '0 pending, 1 approved, 2 rejected'
+  actiontext:
+    type: string
+    description: Reasoning
+  actionby:
+    type: integer
+    description: 'Cert ID, 0 is system processed [CERT Sync usually]'
+  created_at:
+    type: string
+    description: Date transfer submitted
+  updated_at:
+    type: string
+    description: 'Date transfer was last acted on [not updated after processed]'

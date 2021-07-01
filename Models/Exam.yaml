@@ -1,0 +1,30 @@
+title: Exam
+type: object
+properties:
+  id:
+    type: integer
+    description: Class Exam
+  facility_id:
+    type: string
+    description: Class Exam
+  name:
+    type: string
+    description: Class Exam
+  number:
+    type: integer
+    description: 'Number to ask, 0 = all'
+  is_active:
+    type: integer
+    description: 'integer representation of boolean (1=true,0=false)'
+  cbt_required:
+    type: string
+    description: 'null = none, otherwise block id'
+  retake_period:
+    type: integer
+    description: Number of days until automatic reassign (0=no auto-reassign)
+  passing_score:
+    type: integer
+    description: Percentage to pass times 100 (70%= .7 * 100=70)
+  answer_visibility:
+    type: string
+    description: 'Answer visibility, all = user and correct, all_passed = all when passed otherwise just user answers, user_only = only user selected options'

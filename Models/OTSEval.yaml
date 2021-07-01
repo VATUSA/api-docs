@@ -1,0 +1,21 @@
+title: OTSEval
+type: object
+properties:
+  id:
+    type: integer
+    description: Record ID
+  filename:
+    type: string
+    description: Filename in system
+  training_record_id:
+    type: integer
+    description: 'Training record DB ID, if exists'
+  student_id:
+    type: integer
+    description: Student CID
+  instructor_id:
+    type: integer
+    description: Instructor CID
+  rating_id:
+    type: integer
+    description: DB ID of rating

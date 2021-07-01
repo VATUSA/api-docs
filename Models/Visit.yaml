@@ -1,0 +1,18 @@
+title: Visit
+type: object
+properties:
+  id:
+    type: integer
+    description: Class Visit
+  cid:
+    type: integer
+    description: Class Visit
+  facility:
+    type: string
+    description: Class Visit
+  active:
+    type: integer
+    description: '0 = inactive, 1 = active'
+  created_at:
+    type: string
+    description: Class Visit

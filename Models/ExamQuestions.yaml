@@ -1,0 +1,27 @@
+title: ExamQuestions
+type: object
+properties:
+  id:
+    type: integer
+    description: Class ExamQuestions
+  exam_id:
+    type: integer
+    description: Class ExamQuestions
+  question:
+    type: string
+    description: Class ExamQuestions
+  type:
+    type: integer
+    description: '0-Multiple Choice, 1-True/False'
+  answer:
+    type: string
+    description: Text of answer (True/False for T/F question type)
+  alt1:
+    type: string
+    description: 'Only for Mult. Choice, distractor'
+  alt2:
+    type: string
+    description: 'Only for Mult. Choice, distractor'
+  alt3:
+    type: string
+    description: 'Only for Mult. Choice, distractor'

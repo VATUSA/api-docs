@@ -1,0 +1,18 @@
+title: Survey
+type: object
+properties:
+  id:
+    type: integer
+    description: Class Survey
+  facility:
+    type: string
+    description: Class Survey
+  name:
+    type: string
+    description: Class Survey
+  created_at:
+    type: string
+    description: Date added to database
+  updated_at:
+    type: string
+    description: Class Survey

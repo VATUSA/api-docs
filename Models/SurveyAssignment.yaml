@@ -1,0 +1,24 @@
+title: SurveyAssignment
+type: object
+properties:
+  id:
+    type: integer
+    description: Class SurveyQuestion
+  survey_id:
+    type: integer
+    description: Class SurveyQuestion
+  facility:
+    type: string
+    description: Facility user was in when assigned
+  rating:
+    type: integer
+    description: Rating when assigned
+  completed:
+    type: integer
+    description: Integer form of boolean
+  created_at:
+    type: string
+    description: Date added to database
+  updated_at:
+    type: string
+    description: Class SurveyQuestion

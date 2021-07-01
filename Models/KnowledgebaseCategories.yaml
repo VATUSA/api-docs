@@ -1,0 +1,17 @@
+title: KnowledgebaseCategories
+type: object
+properties:
+  id:
+    type: integer
+    description: Class KnowledgebaseCategories
+  name:
+    type: integer
+    description: Class KnowledgebaseCategories
+  questions:
+    type: array
+    description: Class KnowledgebaseCategories
+    items:
+      $ref: '#/components/schemas/KnowledgebaseQuestions'
+  created_at:
+    type: string
+    description: Class KnowledgebaseCategories
