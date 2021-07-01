@@ -146,3 +146,69 @@ paths:
         - jwt: []
         - session: []
       description: Get logged in user's information
+  /cbt:
+    get:
+      summary: Get blocks filtered by facility
+      tags:
+        - cbt
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  blocks:
+                    type: array
+                    items:
+                      $ref: ./Models/TrainingBlock.yaml
+      operationId: get-cbt
+      description: 'Get CBT blocks, ordered by or filtered by facility'
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: facility
+    post:
+      summary: 'Create new block [Auth]'
+      tags:
+        - cbt
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  testing:
+                    type: boolean
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      operationId: post-cbt
+      description: 'Create new CBT Training block. (requires role: ATM, DATM, TA, VATUSA Staff)'
+      security:
+        - jwt: []
+        - session: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                facility:
+                  type: string
+                name:
+                  type: string
+                level:
+                  type: string
+                visible:
+                  type: boolean
+              required:
+                - facility
+                - name
