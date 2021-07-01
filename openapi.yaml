@@ -28,37 +28,21 @@ servers:
   - url: 'https://api.vatusa.net/v2'
 tags:
   - name: auth
-    description: Internal authentication handling commands for use by VATUSA Web Systems to translate Laravel Sessions into JSON Web Tokens
-  - name: cbt
-    description: Computer Based Training actions
+  - name: computer based training
   - name: email
-    description: User email addresses for staff members
   - name: exam
-    description: Exam center actions
   - name: facility
-    description: Facility management actions
   - name: public
-    description: Public feeds of events and news
   - name: rating
-    description: Rating changes
   - name: role
-    description: Role handling
   - name: solo
-    description: Solo certifications
   - name: stats
-    description: Division statistics
   - name: support
-    description: Support Center
   - name: survey
-    description: Survey management
   - name: tmu
-    description: Traffic Management Unit - Notices (NTOS)
   - name: training
-    description: Centralized training records
   - name: transfer
-    description: Transfer request submission and handling actions
   - name: user
-    description: User account management actions
 components:
   securitySchemes:
     jwt:
@@ -149,8 +133,6 @@ paths:
   /cbt:
     get:
       summary: Get blocks filtered by facility
-      tags:
-        - cbt
       responses:
         '200':
           description: OK
@@ -170,6 +152,8 @@ paths:
             type: string
           in: query
           name: facility
+      tags:
+        - computer based training
     post:
       summary: 'Create new block [Auth]'
       tags:
