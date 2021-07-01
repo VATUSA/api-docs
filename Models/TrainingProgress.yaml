@@ -1,0 +1,12 @@
+title: TrainingProgress
+type: object
+properties:
+  cid:
+    type: integer
+    description: Class TrainingProgress
+  chapterid:
+    type: integer
+    description: Class TrainingProgress
+  date:
+    type: string
+    description: Date last completed

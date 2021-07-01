@@ -1,0 +1,18 @@
+title: Role
+type: object
+properties:
+  id:
+    type: integer
+    description: Class Role
+  cid:
+    type: integer
+    description: Class Role
+  facility:
+    type: string
+    description: Class Role
+  role:
+    type: string
+    description: Class Role
+  created_at:
+    type: string
+    description: Class Role

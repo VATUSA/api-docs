@@ -1,0 +1,24 @@
+title: SurveyQuestion
+type: object
+properties:
+  id:
+    type: integer
+    description: Class SurveyQuestion
+  survey_id:
+    type: integer
+    description: Class SurveyQuestion
+  question:
+    type: string
+    description: Class SurveyQuestion
+  data:
+    type: string
+    description: Class SurveyQuestion
+  order:
+    type: integer
+    description: Class SurveyQuestion
+  created_at:
+    type: string
+    description: Date added to database
+  updated_at:
+    type: string
+    description: Class SurveyQuestion

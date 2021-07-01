@@ -1,0 +1,93 @@
+title: User
+type: object
+properties:
+  cid:
+    type: integer
+    description: Class User
+  fname:
+    type: string
+    description: First name
+  lname:
+    type: string
+    description: Last name
+  email:
+    type: string
+    description: 'Email address of user, will be null if API Key or necessary roles are not available (ATM, DATM, TA, WM, INS)'
+  facility:
+    type: string
+    description: Facility ID
+  rating:
+    type: integer
+    description: 'Rating based off array where 1=OBS, S1, S2, S3, C1, C2, C3, I1, I2, I3, SUP, ADM'
+  rating_short:
+    type: string
+    description: String representation of rating
+  created_at:
+    type: string
+    description: Date added to database
+  updated_at:
+    type: string
+    description: Class User
+  flag_needbasic:
+    type: integer
+    description: 1 needs basic exam
+  flag_xferOverride:
+    type: integer
+    description: Has approved transfer override
+  flag_broadcastOptedIn:
+    type: integer
+    description: Has opted in to receiving broadcast emails
+  flag_preventStaffAssign:
+    type: integer
+    description: Ineligible for staff role assignment
+  facility_join:
+    type: string
+    description: 'Date joined facility (YYYY-mm-dd hh:mm:ss)'
+  promotion_eligible:
+    type: boolean
+    description: Is member eligible for promotion?
+  transfer_eligible:
+    type: boolean
+    description: Is member is eligible for transfer?
+  last_promotion:
+    type: string
+    description: Date last promoted
+  flag_homecontroller:
+    type: boolean
+    description: 1-Belongs to VATUSA
+  lastactivity:
+    type: string
+    description: Date last seen on website
+  isMentor:
+    type: boolean
+    description: Has Mentor role
+  isSupIns:
+    type: boolean
+    description: Is a SUP and has INS role
+  roles:
+    type: array
+    description: Class User
+    items:
+      type: object
+      properties:
+        facility:
+          type: string
+          description: Class User
+        role:
+          type: string
+          description: Class User
+  visiting_facilities:
+    type: array
+    description: Class User
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Class User
+        name:
+          type: string
+          description: Class User
+        region:
+          type: integer
+          description: Class User

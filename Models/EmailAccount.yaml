@@ -1,0 +1,12 @@
+title: EmailAccount
+type: object
+properties:
+  id:
+    type: integer
+    description: Class EmailAccounts
+  facility:
+    type: string
+    description: First name
+  username:
+    type: string
+    description: Last name
