@@ -1,0 +1,688 @@
+openapi: 3.0.1
+info:
+  title: VATUSA API
+  description: |-
+    VATUSA APIv2 Documentation.
+                Authentication methods are: <ul>
+                <li> JSON Web Tokens (Translated from Laravel session)</li>
+                <li> Session Cookies (Client-side credentials with ULS)</li>
+                <li> API Keys (Issued to facilities)</li></ul>
+                <p>Method security, if applicable, is indicated in brackets at the end of each endpoint title.</p>
+                <p>Security classification: <ul>
+                    <li><strong>Private:</strong> CORS Restricted (Internal)</li>
+                    <li><strong>Auth:</strong> Accepts Session Cookie or JWT</li>
+                    <li><strong>Key:</strong> Accepts API Key, Session Cookie, or JWT</li>
+                </ul></p>
+                <p>Facilities that have a APIv2 JWK defined in facility settings will have the data encapsulated in a
+                signed package.  For more information, please see the IT section of the VATUSA forums.</p>
+                <p>To prevent database changes in a development environment, you can either use your API sandbox key
+                 or pass the <strong>?test</strong> query parameter with the call. Whether or not <strong>?test</strong> is present,
+                 if both Sandbox JWK and Dev URL are configured, and the domains match, the response will be formatted according to JSON Web Signature, RFC 7515. </p>
+  contact:
+    name: Blake Nahin
+    url: 'https://www.vatusa.net/info/members'
+  version: '2.3'
+  x-logo:
+    url: 'https://www.vatusa.net/img/logo-full.png'
+servers:
+  - url: 'https://api.vatusa.net/v2'
+tags:
+  - name: auth
+    description: Internal authentication handling commands for use by VATUSA Web Systems to translate Laravel Sessions into JSON Web Tokens
+  - name: cbt
+    description: Computer Based Training actions
+  - name: email
+    description: User email addresses for staff members
+  - name: exam
+    description: Exam center actions
+  - name: facility
+    description: Facility management actions
+  - name: public
+    description: Public feeds of events and news
+  - name: rating
+    description: Rating changes
+  - name: role
+    description: Role handling
+  - name: solo
+    description: Solo certifications
+  - name: stats
+    description: Division statistics
+  - name: support
+    description: Support Center
+  - name: survey
+    description: Survey management
+  - name: tmu
+    description: Traffic Management Unit - Notices (NTOS)
+  - name: training
+    description: Centralized training records
+  - name: transfer
+    description: Transfer request submission and handling actions
+  - name: user
+    description: User account management actions
+components:
+  schemas:
+    Action:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class Action
+        to:
+          type: integer
+          description: CID log entered for
+        log:
+          type: string
+          description: Class Action
+        created_at:
+          type: string
+          description: Date rating issued
+    Bucket:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class Bucket
+        facility:
+          type: string
+          description: Class Bucket
+        name:
+          type: string
+          description: Class Bucket
+        arn:
+          type: string
+          description: Class Bucket
+        access_key:
+          type: string
+          description: Class Bucket
+        created_at:
+          type: string
+          description: Class Bucket
+        updated_at:
+          type: string
+          description: Class Bucket
+    EmailAccounts:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class EmailAccounts
+        facility:
+          type: string
+          description: First name
+        username:
+          type: string
+          description: Last name
+    EmailTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class EmailTemplate
+        facility_id:
+          type: string
+          description: Class EmailTemplate
+        template:
+          type: string
+          description: Template name
+        body:
+          type: string
+          description: Template
+        created_at:
+          type: string
+          description: date created
+        updated_at:
+          type: string
+          description: date last modified
+    Exam:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class Exam
+        facility_id:
+          type: string
+          description: Class Exam
+        name:
+          type: string
+          description: Class Exam
+        number:
+          type: integer
+          description: 'Number to ask, 0 = all'
+        is_active:
+          type: integer
+          description: 'integer representation of boolean (1=true,0=false)'
+        cbt_required:
+          type: string
+          description: 'null = none, otherwise block id'
+        retake_period:
+          type: integer
+          description: Number of days until automatic reassign (0=no auto-reassign)
+        passing_score:
+          type: integer
+          description: Percentage to pass times 100 (70%= .7 * 100=70)
+        answer_visibility:
+          type: string
+          description: 'Answer visibility, all = user and correct, all_passed = all when passed otherwise just user answers, user_only = only user selected options'
+    ExamQuestions:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class ExamQuestions
+        exam_id:
+          type: integer
+          description: Class ExamQuestions
+        question:
+          type: string
+          description: Class ExamQuestions
+        type:
+          type: integer
+          description: '0-Multiple Choice, 1-True/False'
+        answer:
+          type: string
+          description: Text of answer (True/False for T/F question type)
+        alt1:
+          type: string
+          description: 'Only for Mult. Choice, distractor'
+        alt2:
+          type: string
+          description: 'Only for Mult. Choice, distractor'
+        alt3:
+          type: string
+          description: 'Only for Mult. Choice, distractor'
+    ExamResults:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class ExamResults
+        exam_id:
+          type: integer
+          description: Class ExamResults
+        exam_name:
+          type: string
+          description: Class ExamResults
+        cid:
+          type: integer
+          description: Class ExamResults
+        score:
+          type: integer
+          description: Percentage times 100
+        passed:
+          type: integer
+          description: 'Integer representation of a boolean (1 = true, 0 = false)'
+        date:
+          type: string
+          description: Date exam submitted
+    Facility:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Facility IATA ID
+        name:
+          type: string
+          description: Class Facility
+        url:
+          type: string
+          description: Class Facility
+        region:
+          type: integer
+          description: Region represented by ATD (ie 7 = VATUSA7)
+    error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: not_logged_in
+        exception:
+          type: string
+        testing:
+          type: boolean
+          example: false
+    OK:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
+        testing:
+          type: boolean
+          example: false
+    OKID:
+      type: object
+      properties:
+        status:
+          type: string
+          example: OK
+        id:
+          type: integer
+          example: 0
+    KnowledgebaseCategories:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class KnowledgebaseCategories
+        name:
+          type: integer
+          description: Class KnowledgebaseCategories
+        questions:
+          type: array
+          description: Class KnowledgebaseCategories
+          items:
+            $ref: '#/components/schemas/KnowledgebaseQuestions'
+        created_at:
+          type: string
+          description: Class KnowledgebaseCategories
+    KnowledgebaseQuestions:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class KnowledgebaseQuestions
+        category_id:
+          type: integer
+          description: Class KnowledgebaseQuestions
+        order:
+          type: integer
+          description: Class KnowledgebaseQuestions
+        question:
+          type: string
+          description: Class KnowledgebaseQuestions
+        answer:
+          type: string
+          description: Class KnowledgebaseQuestions
+        updated_by:
+          type: integer
+          description: Class KnowledgebaseQuestions
+        created_at:
+          type: string
+          description: Class KnowledgebaseQuestions
+        updated_at:
+          type: string
+          description: Class KnowledgebaseQuestions
+    otseval:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Record ID
+        filename:
+          type: string
+          description: Filename in system
+        training_record_id:
+          type: integer
+          description: 'Training record DB ID, if exists'
+        student_id:
+          type: integer
+          description: Student CID
+        instructor_id:
+          type: integer
+          description: Instructor CID
+        rating_id:
+          type: integer
+          description: DB ID of rating
+    Promotion:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class Promotion
+        cid:
+          type: integer
+          description: Class Promotion
+        grantor:
+          type: integer
+          description: 'CID of grantor, 11111 = system generated or conducted outside of VATUSA'
+        to:
+          type: integer
+          description: 'Rating based off array where 1=OBS, S1, S2, S3, C1, C2, C3, I1, I2, I3, SUP, ADM'
+        from:
+          type: integer
+          description: 'Rating based off array where 1=OBS, S1, S2, S3, C1, C2, C3, I1, I2, I3, SUP, ADM'
+        created_at:
+          type: string
+          description: Date rating issued
+        exam:
+          type: string
+          description: Date of exam
+        examiner:
+          type: integer
+          description: CERT ID of examiner
+        position:
+          type: string
+          description: Position worked
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class Role
+        cid:
+          type: integer
+          description: Class Role
+        facility:
+          type: string
+          description: Class Role
+        role:
+          type: string
+          description: Class Role
+        created_at:
+          type: string
+          description: Class Role
+    Survey:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class Survey
+        facility:
+          type: string
+          description: Class Survey
+        name:
+          type: string
+          description: Class Survey
+        created_at:
+          type: string
+          description: Date added to database
+        updated_at:
+          type: string
+          description: Class Survey
+    SurveyAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class SurveyQuestion
+        survey_id:
+          type: integer
+          description: Class SurveyQuestion
+        facility:
+          type: string
+          description: Facility user was in when assigned
+        rating:
+          type: integer
+          description: Rating when assigned
+        completed:
+          type: integer
+          description: Integer form of boolean
+        created_at:
+          type: string
+          description: Date added to database
+        updated_at:
+          type: string
+          description: Class SurveyQuestion
+    SurveyQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class SurveyQuestion
+        survey_id:
+          type: integer
+          description: Class SurveyQuestion
+        question:
+          type: string
+          description: Class SurveyQuestion
+        data:
+          type: string
+          description: Class SurveyQuestion
+        order:
+          type: integer
+          description: Class SurveyQuestion
+        created_at:
+          type: string
+          description: Date added to database
+        updated_at:
+          type: string
+          description: Class SurveyQuestion
+    TrainingBlock:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class TrainingBlock
+        facility:
+          type: string
+          description: Class TrainingBlock
+        order:
+          type: integer
+          description: Class TrainingBlock
+        name:
+          type: string
+          description: Class TrainingBlock
+        visible:
+          type: integer
+          description: Class TrainingBlock
+    TrainingProgress:
+      type: object
+      properties:
+        cid:
+          type: integer
+          description: Class TrainingProgress
+        chapterid:
+          type: integer
+          description: Class TrainingProgress
+        date:
+          type: string
+          description: Date last completed
+    trainingrecord:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Record ID
+        student_id:
+          type: integer
+          description: Student CID
+        instructor_id:
+          type: integer
+          description: Instructor CID
+        session_date:
+          type: string
+          description: Date and time of session
+        facility_id:
+          type: string
+          description: Facility ID (ex. ZSE)
+        position:
+          type: string
+          description: Position worked/trained on (ex. SEA_APP)
+        duration:
+          type: string
+          description: 'Duration of session, HH:MM'
+        movements:
+          type: integer
+          description: Number of aircraft seen
+        score:
+          type: integer
+          description: Overall score/rating out of 5
+        notes:
+          type: string
+          description: Training notes content
+        location:
+          type: integer
+          description: 0 = Classroom; 1 = Live; 2 = Sweatbox
+        ots_status:
+          type: boolean
+          description: 'OTS Status: 0 = Not OTS, 1 = OTS Pass, 2 = OTS Fail, 3 = OTS Recommended'
+        is_cbt:
+          type: boolean
+          description: System - CBT Completion
+        solo_granted:
+          type: boolean
+          description: Solo was granted during the session
+        modified_by:
+          type: boolean
+          description: Editor CID
+    Transfer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class Transfer
+        cid:
+          type: integer
+          description: Class Transfer
+        to:
+          type: string
+          description: Class Transfer
+        from:
+          type: string
+          description: Class Transfer
+        reason:
+          type: string
+          description: Class Transfer
+        status:
+          type: integer
+          description: '0 pending, 1 approved, 2 rejected'
+        actiontext:
+          type: string
+          description: Reasoning
+        actionby:
+          type: integer
+          description: 'Cert ID, 0 is system processed [CERT Sync usually]'
+        created_at:
+          type: string
+          description: Date transfer submitted
+        updated_at:
+          type: string
+          description: 'Date transfer was last acted on [not updated after processed]'
+    User:
+      type: object
+      properties:
+        cid:
+          type: integer
+          description: Class User
+        fname:
+          type: string
+          description: First name
+        lname:
+          type: string
+          description: Last name
+        email:
+          type: string
+          description: 'Email address of user, will be null if API Key or necessary roles are not available (ATM, DATM, TA, WM, INS)'
+        facility:
+          type: string
+          description: Facility ID
+        rating:
+          type: integer
+          description: 'Rating based off array where 1=OBS, S1, S2, S3, C1, C2, C3, I1, I2, I3, SUP, ADM'
+        rating_short:
+          type: string
+          description: String representation of rating
+        created_at:
+          type: string
+          description: Date added to database
+        updated_at:
+          type: string
+          description: Class User
+        flag_needbasic:
+          type: integer
+          description: 1 needs basic exam
+        flag_xferOverride:
+          type: integer
+          description: Has approved transfer override
+        flag_broadcastOptedIn:
+          type: integer
+          description: Has opted in to receiving broadcast emails
+        flag_preventStaffAssign:
+          type: integer
+          description: Ineligible for staff role assignment
+        facility_join:
+          type: string
+          description: 'Date joined facility (YYYY-mm-dd hh:mm:ss)'
+        promotion_eligible:
+          type: boolean
+          description: Is member eligible for promotion?
+        transfer_eligible:
+          type: boolean
+          description: Is member is eligible for transfer?
+        last_promotion:
+          type: string
+          description: Date last promoted
+        flag_homecontroller:
+          type: boolean
+          description: 1-Belongs to VATUSA
+        lastactivity:
+          type: string
+          description: Date last seen on website
+        isMentor:
+          type: boolean
+          description: Has Mentor role
+        isSupIns:
+          type: boolean
+          description: Is a SUP and has INS role
+        roles:
+          type: array
+          description: Class User
+          items:
+            type: object
+            properties:
+              facility:
+                type: string
+                description: Class User
+              role:
+                type: string
+                description: Class User
+        visiting_facilities:
+          type: array
+          description: Class User
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Class User
+              name:
+                type: string
+                description: Class User
+              region:
+                type: integer
+                description: Class User
+    Visit:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Class Visit
+        cid:
+          type: integer
+          description: Class Visit
+        facility:
+          type: string
+          description: Class Visit
+        active:
+          type: integer
+          description: '0 = inactive, 1 = active'
+        created_at:
+          type: string
+          description: Class Visit
+  securitySchemes:
+    jwt:
+      type: http
+      description: JSON Web Token translated from Laravel session
+      scheme: basic
+    session:
+      type: http
+      description: Session cookie (Authentication on main website)
+      scheme: basic
+    apikey:
+      type: apiKey
+      description: API Key issued to facilities and generated on Facility Management page
+      name: apikey
+      in: query
+paths:
+  /users:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: get-users
+      description: Place holder
