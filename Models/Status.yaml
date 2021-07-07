@@ -1,0 +1,7 @@
+title: Status
+type: object
+properties:
+  status:
+    type: string
+  testing:
+    type: boolean
