@@ -28,37 +28,21 @@ servers:
   - url: 'https://api.vatusa.net/v2'
 tags:
   - name: auth
-    description: Internal authentication handling commands for use by VATUSA Web Systems to translate Laravel Sessions into JSON Web Tokens
-  - name: cbt
-    description: Computer Based Training actions
+  - name: computer based training
   - name: email
-    description: User email addresses for staff members
   - name: exam
-    description: Exam center actions
   - name: facility
-    description: Facility management actions
   - name: public
-    description: Public feeds of events and news
   - name: rating
-    description: Rating changes
   - name: role
-    description: Role handling
   - name: solo
-    description: Solo certifications
   - name: stats
-    description: Division statistics
   - name: support
-    description: Support Center
   - name: survey
-    description: Survey management
   - name: tmu
-    description: Traffic Management Unit - Notices (NTOS)
   - name: training
-    description: Centralized training records
   - name: transfer
-    description: Transfer request submission and handling actions
   - name: user
-    description: User account management actions
 components:
   securitySchemes:
     jwt:
@@ -146,3 +130,231 @@ paths:
         - jwt: []
         - session: []
       description: Get logged in user's information
+  /cbt:
+    get:
+      summary: Get blocks filtered by facility
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  blocks:
+                    type: array
+                    items:
+                      $ref: ./Models/TrainingBlock.yaml
+      operationId: get-cbt
+      description: 'Get CBT blocks, ordered by or filtered by facility'
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: facility
+      tags:
+        - computer based training
+    post:
+      summary: 'Create new block [Auth]'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  testing:
+                    type: boolean
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      operationId: post-cbt
+      description: 'Create new CBT Training block. (requires role: ATM, DATM, TA, VATUSA Staff)'
+      security:
+        - jwt: []
+        - session: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                facility:
+                  type: string
+                name:
+                  type: string
+                level:
+                  type: string
+                visible:
+                  type: boolean
+              required:
+                - facility
+                - name
+      tags:
+        - computer based training
+  '/cbt/{blockId}':
+    parameters:
+      - schema:
+          type: string
+        name: blockId
+        in: path
+        required: true
+    get:
+      summary: Get chapters in block
+      tags:
+        - computer based training
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  blockId:
+                    type: integer
+                  blockName:
+                    type: string
+                  facility:
+                    type: string
+                  chapters:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        sortOrder:
+                          type: integer
+                        name:
+                          type: string
+                        active:
+                          type: boolean
+                        link:
+                          type: string
+        '404':
+          description: Not Found
+      operationId: get-cbt-id
+      description: Get chapters for the block
+    post:
+      summary: Create new chapter
+      tags:
+        - computer based training
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./Models/Status.yaml
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      operationId: post-cbt-id
+      description: Create a new chapter
+      security:
+        - jwt: []
+        - session: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                facility:
+                  type: string
+                name:
+                  type: string
+                url:
+                  type: string
+    delete:
+      summary: Delete block
+      tags:
+        - computer based training
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./Models/Status.yaml
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      operationId: delete-cbt-id
+      description: Delete Block
+      security:
+        - jwt: []
+        - session: []
+  '/cbt/{blockId}/{chapterId}':
+    parameters:
+      - schema:
+          type: string
+        name: blockId
+        in: path
+        description: Block ID
+        required: true
+      - schema:
+          type: string
+        name: chapterId
+        in: path
+        required: true
+        description: Chapter ID
+    put:
+      summary: Edit Chapter
+      operationId: put-cbt-blockId-chapterId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./Models/Status.yaml
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      security:
+        - jwt: []
+        - session: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sortOrder:
+                  type: integer
+                name:
+                  type: string
+                active:
+                  type: boolean
+                url:
+                  type: string
+    delete:
+      summary: Delete CBT Chapter
+      operationId: delete-cbt-blockId-chapterId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./Models/Status.yaml
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      description: Delete CBT Chapter
