@@ -1,0 +1,28 @@
+title: ExamResultswithQuestions
+type: object
+properties:
+  id:
+    type: integer
+    description: Class ExamResults
+  exam_id:
+    type: integer
+    description: Class ExamResults
+  exam_name:
+    type: string
+    description: Class ExamResults
+  cid:
+    type: integer
+    description: Class ExamResults
+  score:
+    type: integer
+    description: Percentage times 100
+  passed:
+    type: integer
+    description: 'Integer representation of a boolean (1 = true, 0 = false)'
+  date:
+    type: string
+    description: Date exam submitted
+  questions:
+    type: array
+    items:
+      $ref: ./ExamQuestions.yaml

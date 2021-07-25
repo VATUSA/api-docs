@@ -341,6 +341,9 @@ paths:
                   type: boolean
                 url:
                   type: string
+      tags:
+        - computer based training
+      description: Edit CBT Chapter
     delete:
       summary: Delete CBT Chapter
       operationId: delete-cbt-blockId-chapterId
@@ -358,3 +361,379 @@ paths:
         '404':
           description: Not Found
       description: Delete CBT Chapter
+      tags:
+        - computer based training
+  /exam/request:
+    get:
+      summary: 'Generate Exam [Private]'
+      tags:
+        - exam
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: string
+                    description: 'Base64 encoded quiz payload with signature appended, period-delineated'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      operationId: get-exam-request
+      description: Generate exam payload
+      security:
+        - jwt: []
+  '/exam/{facilityId}':
+    parameters:
+      - schema:
+          type: string
+          pattern: '^[A-Z]{3}$'
+          minLength: 3
+          maxLength: 3
+        name: facilityId
+        in: path
+        required: true
+    get:
+      summary: Get list of active facility exams
+      tags:
+        - exam
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./Models/Exam.yaml
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-exam-facilityId
+      security:
+        - jwt: []
+        - apikey: []
+      description: Get list of active exams for facility
+  '/exam/{examId}':
+    parameters:
+      - schema:
+          type: string
+          pattern: ^\d+$
+        name: examId
+        in: path
+        required: true
+    get:
+      summary: Get Exam
+      tags:
+        - exam
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./Models/Exam.yaml
+              examples: {}
+      operationId: get-exam-examId
+      description: Get exam details by ID
+      security:
+        - jwt: []
+        - apikey: []
+    put:
+      summary: Edit Exam Details
+      operationId: put-exam-examId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - jwt: []
+        - apikey: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                cbtRequired:
+                  type: integer
+                  description: ID of CBT to require before this exam can be taken
+                passingScore:
+                  type: integer
+                  description: Passing Score Percentage * 100
+                retakePeriod:
+                  description: Auto-reassign on failure after $retakePeriod days
+                  type: integer
+                numberQuestions:
+                  type: integer
+                  description: Number of questions from pool to give in payload
+                active:
+                  type: integer
+                  description: Integer representation of bool
+      tags:
+        - exam
+      description: Edit details of exam
+    post:
+      summary: Create New Exam Question
+      operationId: post-exam-examId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  id:
+                    type: integer
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - jwt: []
+        - apikey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                type:
+                  type: string
+                  description: 'Type of question: multiple, truefalse'
+                  enum:
+                    - multiple
+                    - trueflase
+                choice1:
+                  type: string
+                  description: Answer
+                choice2:
+                  type: string
+                  description: 'Distractor #1 (only for multiple)'
+                choice3:
+                  type: string
+                  description: 'Distractor #2 (only for multiple)'
+                choice4:
+                  type: string
+                  description: 'Distractor #3 (only for multiple)'
+      tags:
+        - exam
+      description: Create a new exam question for examId
+  '/exam/{examId}/questions':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+    get:
+      summary: Get Exam Questions
+      tags:
+        - exam
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./Models/ExamQuestions.yaml
+              examples:
+                Example:
+                  value:
+                    - id: 0
+                      exam_id: 0
+                      question: string
+                      type: 0
+                      answer: string
+                      alt1: string
+                      alt2: string
+                      alt3: string
+      operationId: get-exam-examId-questions
+      security:
+        - jwt: []
+        - apikey: []
+      description: Get questions of exam
+  '/exam/{examId}/{questionId}':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: questionId
+        in: path
+        required: true
+    put:
+      summary: Edit Question
+      operationId: put-exam-examId-questionId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  id:
+                    type: integer
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      security:
+        - jwt: []
+        - apikey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - multiple
+                    - truefalse
+                  description: 'Type of exam, choices: multiple, truefalse'
+                choice1:
+                  type: string
+                  description: Answer
+                choice2:
+                  type: string
+                  description: 'Distractor #1 (only for multiple)'
+                choice3:
+                  type: string
+                  description: 'Distractor #2 (only for multiple)'
+                choice4:
+                  type: string
+                  description: 'Distractor #3 (only for multiple)'
+      tags:
+        - exam
+      description: Edit exam question
+  '/exam/{examId}/assign/{cid}':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: cid
+        in: path
+        required: true
+        description: CERT ID
+    post:
+      summary: Assign Exam
+      operationId: post-exam-examId-assign-cid
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+      security:
+        - jwt: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expire:
+                  type: integer
+                  description: Defaults to 7 if not defined or null
+                  nullable: true
+      tags:
+        - exam
+      description: Assign an exam
+    delete:
+      summary: Delete Exam Assignment
+      operationId: delete-exam-examId-assign-cid
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      tags:
+        - exam
+      description: Delete exam assignment
+  '/exams/result/{resultId}':
+    parameters:
+      - schema:
+          type: string
+        name: resultId
+        in: path
+        required: true
+    get:
+      summary: Get Exam Result
+      tags:
+        - exam
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: ./Models/ExamResultswithQuestions.yaml
+      operationId: get-exams-result-id
+      security:
+        - jwt: []
+        - apikey: []
+      description: Get results of exam
